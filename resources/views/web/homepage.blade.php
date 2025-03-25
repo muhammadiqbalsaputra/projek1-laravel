@@ -68,7 +68,7 @@
           </x-card>
 
           @if (isset($alerts[$index]))
-            <x-alert pesan="{{ $alerts[$index][0] }}"/>
+            <x-alert pesan="{{ $alerts[$index][0] }}"></x-alert>
           @endif
         </div>
       @endforeach
