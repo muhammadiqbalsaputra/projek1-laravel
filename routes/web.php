@@ -3,34 +3,35 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-Route::get('/pengguna',function (){
-    return "ini merupakan halaman pengguna. halaman ini merupakan halaman yang berisikan data dari pengguna";
+Route::get('/', function(){
+    $title = "Home";
+    return view('web.homepage', ['title'=>$title]);
 });
 
-Route::get('/produk',function (){
-    return "ini halaman produk. Halaman ini berisikan produk produk yang terjual";
+Route::get('products', function(){
+    $title = "Products";
+    return view('web.products', ['title'=>$title]);
 });
-
-Route::get('/keranjang',function (){
-    return "ini halaman keranjang berisikan produk produk yang telah dipilih oleh konsumen";
+// Route::get('product/{slug}', function($slug){
+//     $title = "Single Product";
+//     return view('web.single_product', ['title'=>$title]);
+// });
+Route::get('categories', function(){
+    $title = "Categories";
+    return view('web.categories', ['title'=>$title]);
 });
-
-Route::get('/checkout',function (){
-    return "ini halaman checkout yang dimana halaman ini akan menginput lokasi konsumen dan harga yang ditampilkan dari produk yang dibeli";
+// Route::get('category/{slug}', function($slug){
+//     $title = "Single Catergories";
+//     return view('web.single_category', ['title'=>$title]);
+// });
+Route::get('cart', function(){
+    $title = "Cart";
+    return view('web.cart', ['title'=>$title]);
 });
-
-Route::get('/pembayaran',function (){
-    return "ini halaman pembayaran yang dimana pada halaman ini konsumen akan membayar barang yang dibeli";
+Route::get('checkout', function(){
+    $title = "Checkout";
+    return view('web.checkout', ['title'=>$title]);
 });
-
-Route::get('/rating',function (){
-    return "ini halaman rating. halaman ini berisikan review dari produk yang telah terjual";
-});
-
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
