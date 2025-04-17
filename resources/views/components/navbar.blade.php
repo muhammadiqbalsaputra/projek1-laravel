@@ -18,7 +18,7 @@
                       Categories
                   </a>
                   <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="category/{$slug}">Pria</a></li>
+                      <li><a class="dropdown-item" href="#">Pria</a></li>
                       <li><a class="dropdown-item" href="#">Wanita</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="#">Anak-anak</a></li>
