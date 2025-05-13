@@ -79,22 +79,63 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Cari produk berdasarkan ID, jika tidak ditemukan akan lempar 404
+        $product = Products::findOrFail($id);
+
+        // Ambil semua kategori untuk dropdown select
+        $categories = Categories::all();
+
+        // Kembalikan view dengan data product dan categories
+        return view('dashboard.products.update', [
+            'product' => $product,
+            'categories' => $categories,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Products $product)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|numeric',
+            'image' => 'nullable|string',
+        ]);
+
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
+
+        // Cek kategori apakah ada
+        if (!Categories::where('id', $validated['category_id'])->exists()) {
+            return back()->withErrors(['category_id' => 'Category does not exist.'])->withInput();
+        }
+
+        $product->update($validated);
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Products $product)
     {
-        //
+        // Hapus file gambar jika ada
+        if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+            unlink(public_path('storage/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
+
 }
