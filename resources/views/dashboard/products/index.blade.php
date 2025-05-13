@@ -8,12 +8,12 @@
                 Add New Product
             </flux:button>
 
-            {{-- Refresh--}}
+            {{-- Refresh --}}
             <div class="ml-auto flex items-center space-x-2">
-                    <a href="{{ route('products.index') }}"
-                        class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-md">
-                        Refresh
-                    </a>
+                <a href="{{ route('products.index') }}"
+                    class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-md">
+                    Refresh
+                </a>
                 </form>
             </div>
         </div>
@@ -50,23 +50,30 @@
                             <td class="px-6 py-4 text-sm">{{ $product->description }}</td>
                             <td class="px-6 py-4 text-sm">{{ $product->price }}</td>
                             <td class="px-6 py-4 text-sm">{{ $product->stock }}</td>
-                            <td class="px-6 py-4 text-sm space-x-2">
-                                <a href="{{ route('products.edit', $product->id) }}"
-                                    class="inline-block px-3 py-1 text-xs font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded">
-                                    Edit
-                                </a>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                    class="inline-block"
-                                    onsubmit="return confirm('Are you sure want to delete this product?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded">
-                                        Delete
-                                    </button>
-                                </form>
+                            <td class="px-6 py-4 text-sm">
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="{{ route('products.show', $product->id) }}"
+                                        class="px-3 py-1 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        View
+                                    </a>
 
+                                    <a href="{{ route('products.edit', $product->id) }}"
+                                        class="px-3 py-1 text-xs font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded">
+                                        Edit
+                                    </a>
+
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure want to delete this product?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
