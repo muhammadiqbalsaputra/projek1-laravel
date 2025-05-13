@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\ProductCategoryController;
+use App\Models\Products;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\ProductController;
 
 // kode baru
-Route::get('/', [HomepageController::class, 'index']);
+Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('products', [HomepageController::class, 'products']);
 Route::get('product/{slug}', [HomepageController::class, 'product']);
 Route::get('categories', [HomepageController::class, 'categories']);
@@ -32,23 +35,30 @@ Route::get('checkout', [HomepageController::class, 'checkout']);
 //     $title = "Single Product";
 //     return view('web.single_product', ['title'=>$title]);
 // });
-Route::get('categories', function () {
-    $title = "Categories";
-    return view('web.categories', ['title' => $title]);
-});
 
-// Route::get('category/{slug}', function($slug){
-//     $title = "Single Catergories";
-//     return view('web.single_category', ['title'=>$title]);
+// Route::get('categories', function () {
+//     $title = "Categories";
+//     return view('web.categories', ['title' => $title]);
 // });
-Route::get('cart', function () {
-    $title = "Cart";
-    return view('web.cart', ['title' => $title]);
-});
-Route::get('checkout', function () {
-    $title = "Checkout";
-    return view('web.checkout', ['title' => $title]);
-});
+
+// // Route::get('category/{slug}', function($slug){
+// //     $title = "Single Catergories";
+// //     return view('web.single_category', ['title'=>$title]);
+// // });
+// Route::get('cart', function () {
+//     $title = "Cart";
+//     return view('web.cart', ['title' => $title]);
+// });
+// Route::get('checkout', function () {
+//     $title = "Checkout";
+//     return view('web.checkout', ['title' => $title]);
+// });
+
+Route::resource('dashboard/categories',ProductCategoryController::class);
+
+Route::resource('dashboard/products',ProductController::class);
+
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

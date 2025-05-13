@@ -12,8 +12,10 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group :heading="__('menu')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
+                    <flux:navlist.item icon="book-open" :href="route('products.index')" :current="request()->routeIs('products')" wire:navigate>{{ __('Products') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
