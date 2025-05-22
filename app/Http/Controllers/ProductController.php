@@ -94,7 +94,7 @@ class ProductController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage.la
      */
     public function update(Request $request, Products $product)
     {
