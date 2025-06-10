@@ -68,4 +68,12 @@ class ProductCategoryController extends Controller
         return new ProductCategoryResource($category, 201, 'Product Category Updated Successfully');
     }
 
+    public function destroy($id)
+    {
+        $category = Categories::findOrFail($id);
+        $category->delete();
+        return response()->json(['success' => true, 'message' => 'Product Category Deleted Successfully']);
+    }
+
+
 }

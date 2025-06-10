@@ -88,4 +88,11 @@ class ProductController extends Controller
         $product->save();
         return new ProductResource($product, 201, 'Product Updated Successfully');
     }
+    public function destroy($id)
+    {
+        $product = Products::findOrFail($id);
+        $product->delete();
+        return response()->json(['success' => true, 'message' => 'Product Deleted Successfully']);
+    }
+
 }
