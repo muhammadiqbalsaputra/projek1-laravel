@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categories;
+use Illuminate\Support\Str;
 
 class ProductCategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductCategoryController extends Controller
     {
         $categories = Categories::all();
 
-        return view('dashboard.categories.index',['categories'=>$categories]);
+        return view('dashboard.categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -22,7 +23,7 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.categories.create');
     }
 
     /**
@@ -30,7 +31,21 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+
+        Categories::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->slug),
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Category created successfully.');
     }
 
     /**
@@ -44,24 +59,45 @@ class ProductCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $category = Categories::findOrFail($id);
+        return view('dashboard.categories.edit', compact('category'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Categories::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:product_categories,name,' . $category->id,
+            'slug' => 'required|string|max:255|unique:product_categories,slug,' . $category->id,
+            'description' => 'nullable|string',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => \Str::slug($request->slug),
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $category = Categories::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
+
 }

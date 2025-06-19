@@ -4,21 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Binafy\LaravelCart\Cartable;
 
-class Products extends Model
+class Products extends Model implements Cartable
 {
-    use HasFactory;
+    public function category()
+    {
+        return $this->belongsTo(Categories::class, 'product_category_id');
+    }
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
 
-    protected $table = 'products'; // Sesuaikan dengan nama tabel di database
-        
-    protected $fillable = [
-        'name',
-        'slug',
-        'category_id',
-        'price',
-        'stock',
-        'description',
-        'image',
-        'image_url',
-    ];
 }

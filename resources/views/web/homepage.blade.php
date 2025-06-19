@@ -1,79 +1,62 @@
-@php
-    $cards = [
-        [
-            'gambar' =>
-                'https://www.patrobas.id/wp-content/uploads/2022/01/7bb1cbd890c9d35334d23faeab879deb_1636285209033-800x800.jpeg',
-            'judul' => 'Sepatu Patrobas',
-            'desk' => 'Patrobas Cloud High Olive Terinspirasi dari awan yang empuk',
-            'btn' => 'Beli Sekarang',
-        ],
-        [
-            'gambar' => 'https://antarestar.com/wp-content/uploads/2024/02/Desain-tanpa-judul-25.png',
-            'judul' => 'Jaket Gunung',
-            'desk' => 'Jacket Aether adalah jaket yang dirancang untuk kegiatan outdoor',
-            'btn' => 'Beli Sekarang',
-        ],
-        [
-            'gambar' =>
-                'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/95/MTA-105601827/no-brand_celana-panjang-chino-cargo-anak-laki-laki-usia-1-8-tahun_full01.jpg',
-            'judul' => 'Celana Cargo',
-            'desk' => 'Celana cargo banyak kantong, dengan pilihan 4 warna',
-            'btn' => 'Beli Sekarang',
-        ],
-        [
-            'gambar' =>
-                'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-6351510/true_rhodey_true_topi_kupluk_rajut_beanie_hat_-_ec002_full05_mfvytk9o.jpg',
-            'judul' => 'Topi Kupluk Pria',
-            'desk' => 'Topi kupluk dari bahan kain yang lembut dan nyaman ',
-            'btn' => 'Beli Sekarang',
-        ],
-        [
-            'gambar' =>
-                'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/95/MTA-105601827/no-brand_celana-panjang-chino-cargo-anak-laki-laki-usia-1-8-tahun_full01.jpg',
-            'judul' => 'Celana Cargo',
-            'desk' => 'Celana cargo banyak kantong, dengan pilihan 4 warna',
-            'btn' => 'Beli Sekarang',
-        ],
-    ];
-    $alerts = [['Diskon 50%'], ['Diskon 20%'], ['Diskon 35%'], ['Diskon 70%'], ['Diskon 20%']];
-@endphp
-
-
-<x-Layout>
-    <x-slot:title>{{ $title }}</x-slot>
-
-    <h3 class="mb-lg-5 mt-lg-5">Homepage</h3>
-
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-lg-5">
-            @foreach ($cards as $index => $card)
+<x-layout>
+    <x-slot name="title"> Homepage</x-slot>
+    <div class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 style="font-size: 1.5rem;">Kategori Product</h3>
+            <a href="{{ URL::to('/categories') }}" class="btn btn-outline-primarybtn-sm">Lihat Kategori</a>
+        </div>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+            @foreach ($categories as $category)
                 <div class="col">
-                    <x-card img="{{ $card['gambar'] }}">
-                        <x-slot name="judul">{{ $card['judul'] }}</x-slot>
-                        <x-slot name="desk">{{ $card['desk'] }}</x-slot>
-                        <x-slot name="tombol">{{ $card['btn'] }}</x-slot>
-                    </x-card>
-
-                    @if (isset($alerts[$index]))
-                        <x-alert pesan="{{ $alerts[$index][0] }}"></x-alert>
-                    @endif
+                    <a href="{{ URL::to('/category/' . $category->slug) }}" class="cardtext-decoration-none">
+                        <div class="card category-card text-center h-100 py-3 border-0 shadow-sm">
+                            <div class="mx-auto mb-2"
+                                style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:50%;">
+                                <img src="{{ $category->image }}" alt="{{ $category->name }}"
+                                    style="width:36px;height:36px;object-fit:contain;">
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title mb-1 text-light">{{ $category->name }}</h6>
+                                <p class="card-text text-muted small text-truncate">{{ $category->description }}</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             @endforeach
         </div>
     </div>
-
-    <div class="row">
-        <h3>Categories</h3>
-        @foreach ($categories as $category)
-            <div class="col-2">
-                <div class="card"> <img src="{{ $category['image'] }}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $category['name'] }}</h5>
-                        <p class="card-text"> {{ $category['description'] }} </p> <a
-                            href="/category/{{ $category['slug'] }}" class="btn btn-primary">Detail</a>
+    <div class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 style="font-size: 1.5rem;">Product Kami</h3>
+            <a href="{{ URL::to('/products') }}" class="btn btn-outline-primary btn-sm">Lihat Semua Product</a>
+        </div>
+        <div class="row">
+            @forelse($products as $product)
+                <div class="col-md-3 mb-4">
+                    <div class="card product-card h-100 shadow-sm">
+                        <img src="{{ $product->image_url ? $product->image_url : 'https://via.placeholder.com/350x200?text=No+Image' }}"
+                            class="card-img-top" alt="{{ $product->name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text text-truncate">{{ $product->description }}</p>
+                            <div class="mt-auto">
+                                <span class="fw-bold text-primary">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</span>
+                                <a href="{{ route('product.show', $product->slug) }}"
+                                    class="btn btn-outline-primary btn-sm float-end">Lihat Detail</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            @empty
+                <div class="col">
+                    <div class="alert alert-info">Belum ada produk pada kategori
+                        ini.</div>
+                </div>
+            @endforelse
+            <div class="d-flex justify-content-center w-100 mt-4">
+                {{ $products->links('vendor.pagination.simple-bootstrap-5') }}
             </div>
-        @endforeach
+        </div>
     </div>
-</x-Layout>
+</x-layout>
